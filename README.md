@@ -41,7 +41,7 @@ Lab1_OOP_try1/
 
 ## Сборка и запуск
 
-Нужен компилятор с поддержкой C++17 (g++ 7 и новее).
+Стандарт языка — **C++14** (требование преподавателя), подойдёт g++ 5 и новее.
 
 **Windows** (MinGW-w64):
 
@@ -53,7 +53,7 @@ build\lab1.exe
 **Linux / macOS**:
 
 ```
-g++ -std=c++17 -Wall -Wextra -pedantic -Iinclude src/*.cpp -o lab1
+g++ -std=c++14 -Wall -Wextra -pedantic -Iinclude src/*.cpp -o lab1
 ./lab1
 ```
 
