@@ -12,7 +12,7 @@
 # Общие сведения о проекте
 #---------------------------------------------------------------------------
 PROJECT_NAME           = "Лабораторная работа №1 по ООП"
-PROJECT_NUMBER         = v0.3
+PROJECT_NUMBER         = v0.4
 PROJECT_BRIEF          = "Ссылки, указатели и динамическая память в C++"
 OUTPUT_DIRECTORY       = docs
 OUTPUT_LANGUAGE        = Russian
