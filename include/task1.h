@@ -18,12 +18,14 @@
  *
  * Подробное описание решения с примером работы — на странице @ref task1.
  * @author Vareshka86
- * @date 2026-10-01
- * @version 0.1
+ * @date 2026-10-02
+ * @version 0.2
  */
 
 #ifndef TASK1_H
 #define TASK1_H
+
+#include "random_number.h" // RANDOM_MIN, RANDOM_MAX
 
 #include <cstddef>
 
@@ -38,12 +40,6 @@ enum class FillMode
     Random,  ///< Случайными числами из диапазона [RANDOM_MIN; RANDOM_MAX]
     Keyboard ///< Вводом с клавиатуры через std::cin
 };
-
-/// Нижняя граница случайных чисел при заполнении массива.
-constexpr int RANDOM_MIN = -50;
-
-/// Верхняя граница случайных чисел при заполнении массива.
-constexpr int RANDOM_MAX = 50;
 
 /**
  * @brief Заполняет массив случайными числами или с клавиатуры.

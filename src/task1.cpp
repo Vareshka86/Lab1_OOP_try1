@@ -2,17 +2,17 @@
  * @file task1.cpp
  * @brief Реализация Задания №1: функции работы со статическим массивом.
  * @author Vareshka86
- * @date 2026-10-01
- * @version 0.1
+ * @date 2026-10-02
+ * @version 0.2
  */
 
 #include "task1.h"
 #include "input.h"
+#include "random_number.h"
 
 #include <iomanip>
 #include <iostream>
 #include <limits>
-#include <random>
 #include <string>
 
 /// Вспомогательные функции, видимые только внутри этого файла.
@@ -21,23 +21,6 @@ namespace
 
 /// Ширина колонки при выводе одного элемента массива (без пробела-разделителя).
 constexpr int COLUMN_WIDTH = 6;
-
-/**
- * @brief Возвращает генератор случайных чисел, общий для всей программы.
- * @details Генератор хранится в **статической локальной** переменной:
- * он создаётся один раз при первом вызове и живёт до конца программы.
- * Поэтому из функции можно безопасно вернуть ссылку на него
- * (возвращать ссылку на обычную локальную переменную нельзя —
- * она уничтожается при выходе из функции).
- * @return Ссылка на генератор std::mt19937.
- */
-std::mt19937& randomEngine()
-{
-    // std::random_device даёт случайное «зерно», чтобы при каждом
-    // запуске программы получались разные числа.
-    static std::mt19937 engine{std::random_device{}()};
-    return engine;
-}
 
 /**
  * @brief Спрашивает у пользователя, как заполнить массив.
@@ -72,13 +55,11 @@ void fillArray(int (&arr)[ARRAY_SIZE], FillMode mode)
 {
     if (mode == FillMode::Random)
     {
-        // Равномерное распределение целых чисел на отрезке [RANDOM_MIN; RANDOM_MAX]
-        std::uniform_int_distribution<int> distribution{RANDOM_MIN, RANDOM_MAX};
-
-        // int& - ссылка на элемент: присваивание записывает число прямо в массив
+        // int& - ссылка на элемент: присваивание записывает число прямо в массив.
+        // Случайные числа даёт общий модуль random_number (randomInt).
         for (int& element : arr)
         {
-            element = distribution(randomEngine());
+            element = randomInt(RANDOM_MIN, RANDOM_MAX);
         }
         std::cout << "Массив заполнен случайными числами.\n";
         return;
