@@ -1,9 +1,9 @@
 /**
  * @file task3.cpp
- * @brief Реализация Задания №3 (часть 1 из 2): структура SafeArray, getElement(), printSafe().
+ * @brief Реализация Задания №3: структура SafeArray, getElement(), printSafe(), reSizeArray().
  * @author Vareshka86
  * @date 2026-10-02
- * @version 0.3
+ * @version 0.4
  */
 
 #include "task3.h"
@@ -60,7 +60,7 @@ void printTask3Menu()
               << "  1 - вывести массив            (printSafe)\n"
               << "  2 - прочитать элемент         (getElement справа от =)\n"
               << "  3 - записать элемент          (getElement слева от =)\n"
-              << "  4 - изменить размер массива   (reSizeArray - во второй части задания)\n"
+              << "  4 - изменить размер массива   (reSizeArray)\n"
               << "  0 - вернуться в главное меню\n";
 }
 
@@ -134,6 +134,69 @@ void printSafe(const SafeArray& arr)
     std::cout << '\n';
 }
 
+void reSizeArray(SafeArray& arr, int N, int M)
+{
+    // Проверки: массив должен существовать, N - совпадать с его размером, M - быть больше 0
+    if (arr.data == nullptr)
+    {
+        std::cout << "Ошибка: массива нет - менять размер нечему.\n";
+        return;
+    }
+    if (N != arr.size)
+    {
+        std::cout << "Ошибка: N = " << N << " не совпадает с размером массива " << arr.size
+                  << ". Массив не изменён.\n";
+        return;
+    }
+    if (M <= 0)
+    {
+        std::cout << "Ошибка: новый размер M должен быть больше 0. Массив не изменён.\n";
+        return;
+    }
+    if (M == N)
+    {
+        std::cout << "Новый размер равен текущему (" << N << ") - массив не изменился.\n";
+        return;
+    }
+
+    // Новый массив: пустые фигурные скобки {} обнуляют все элементы, поэтому
+    // при увеличении размера новые элементы сразу равны 0 (пункт 6.2 условия)
+    int* newData = new int[M]{};
+
+    // Копируем элементы, которые есть и в старом, и в новом массиве
+    const int common = (M < N) ? M : N;
+    for (int i = 0; i < common; ++i)
+    {
+        newData[i] = arr.data[i];
+    }
+
+    if (M < N)
+    {
+        // Пункт 6.1 условия: элементы с индексами M ... N - 1 удаляются - выводим их
+        std::cout << "Размер уменьшен с " << N << " до " << M << ". Удалённые элементы:\n";
+        std::cout << "Индекс   :";
+        for (int i = M; i < N; ++i)
+        {
+            std::cout << ' ' << std::setw(COLUMN_WIDTH) << i;
+        }
+        std::cout << '\n' << "Значение :";
+        for (int i = M; i < N; ++i)
+        {
+            std::cout << ' ' << std::setw(COLUMN_WIDTH) << arr.data[i];
+        }
+        std::cout << '\n';
+    }
+    else
+    {
+        std::cout << "Размер увеличен с " << N << " до " << M << ". Новые элементы с индексами "
+                  << N << "-" << M - 1 << " равны 0.\n";
+    }
+
+    delete[] arr.data;   // старый массив больше не нужен - освобождаем, иначе утечка
+    arr.data = newData;  // структура теперь описывает новый массив
+    arr.size = M;
+}
+
 void freeSafeArray(SafeArray& arr)
 {
     delete[] arr.data;  // для nullptr ничего не делает, поэтому повторный вызов безопасен
@@ -143,7 +206,7 @@ void freeSafeArray(SafeArray& arr)
 
 void runTask3()
 {
-    std::cout << "\n=== Задание №3. Безопасный массив SafeArray (часть 1 из 2) ===\n";
+    std::cout << "\n=== Задание №3. Безопасный массив SafeArray ===\n";
 
     const int size = readIntInRange("\nРазмер массива (от " + std::to_string(TASK3_MIN_SIZE) +
                                         " до " + std::to_string(TASK3_MAX_SIZE) + "): ",
@@ -205,9 +268,16 @@ void runTask3()
             }
 
             default: // 4
-                std::cout << "Изменение размера массива (reSizeArray) будет во второй части "
-                             "задания, в следующей версии программы.\n";
+            {
+                // N - текущий размер массива, M - новый, как в условии задания
+                const int M = readIntInRange("Новый размер M (от 1 до " +
+                                                 std::to_string(TASK3_MAX_SIZE) + "): ",
+                                             1, TASK3_MAX_SIZE);
+                reSizeArray(myArr, myArr.size, M);
+                std::cout << "Массив после изменения размера:\n";
+                printSafe(myArr);
                 break;
+            }
             }
         }
     }
