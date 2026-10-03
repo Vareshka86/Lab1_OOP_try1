@@ -11,14 +11,15 @@
  * - v0.4 — Задание №3, часть 2 (изменение размера массива);
  * - v1.0 — Задание №4 (двумерный массив, параметры по умолчанию).
  * @author Vareshka86
- * @date 2026-10-02
- * @version 0.4
+ * @date 2026-10-03
+ * @version 1.0
  */
 
 #include "input.h"
 #include "task1.h"
 #include "task2.h"
 #include "task3.h"
+#include "task4.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -29,7 +30,7 @@
 #endif
 
 /// Текущая версия программы (совпадает с меткой версии в git).
-constexpr const char* PROGRAM_VERSION = "v0.4";
+constexpr const char* PROGRAM_VERSION = "v1.0";
 
 /// Вспомогательные функции, видимые только внутри этого файла.
 namespace
@@ -61,7 +62,7 @@ void printMainMenu()
               << "  1 - Задание №1: статический массив и ссылки\n"
               << "  2 - Задание №2: динамический массив и new/delete\n"
               << "  3 - Задание №3: безопасный массив SafeArray\n"
-              << "  4 - Задание №4: учёт оценок студентов (в разработке)\n"
+              << "  4 - Задание №4: учёт оценок студентов\n"
               << "  0 - выход\n";
 }
 
@@ -101,8 +102,7 @@ int main()
                 break;
 
             case 4:
-                std::cout << "Задание №" << choice
-                          << " будет реализовано в следующей версии программы.\n";
+                runTask4();
                 break;
 
             default: // 0 - выход

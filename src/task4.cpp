@@ -263,9 +263,9 @@ void runTask4()
                                     1, TASK4_MAX_COLS);
 
     int** grades = allocateMatrix(rows, cols);
-    std::cout << "\nПамять выделена: allocateMatrix(" << rows << ", " << cols << ") - массив из "
-              << rows << " указателей на строки и " << rows << " строк по " << cols
-              << " оценок, все оценки равны 0.\n";
+    std::cout << "\nПамять выделена: allocateMatrix(" << rows << ", " << cols
+              << ") - массив указателей на строки и строки матрицы " << rows << " x " << cols
+              << "; все оценки равны 0.\n";
 
     try
     {
@@ -296,6 +296,6 @@ void runTask4()
 
     freeMatrix(grades, rows);
     grades = nullptr; // freeMatrix() получила копию указателя, поэтому обнуляем его здесь
-    std::cout << "\nПамять освобождена: freeMatrix(grades, rows) - сначала " << rows
-              << " строк, затем массив указателей; grades = nullptr.\n";
+    std::cout << "\nПамять освобождена: freeMatrix(grades, rows) - сначала строки матрицы, "
+              << "затем массив указателей; grades = nullptr.\n";
 }
