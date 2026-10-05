@@ -2,8 +2,8 @@
  * @file task1.cpp
  * @brief Реализация Задания №1: функции работы со статическим массивом.
  * @author Vareshka86
- * @date 2026-10-02
- * @version 0.2
+ * @date 2026-10-05
+ * @version 1.0.1
  */
 
 #include "task1.h"
@@ -51,7 +51,7 @@ void printTask1Menu()
 
 } // namespace
 
-void fillArray(int (&arr)[ARRAY_SIZE], FillMode mode)
+void fillArray(IntArray& arr, FillMode mode)
 {
     if (mode == FillMode::Random)
     {
@@ -74,7 +74,7 @@ void fillArray(int (&arr)[ARRAY_SIZE], FillMode mode)
     }
 }
 
-void printArray(const int (&arr)[ARRAY_SIZE])
+void printArray(const IntArray& arr)
 {
     // Строка с индексами - чтобы пользователю было удобно выбирать
     // элементы для swapElements().
@@ -105,8 +105,10 @@ void swapValues(int& a, int& b)
     b = temp;
 }
 
-void swapElements(int (&arr)[ARRAY_SIZE], int firstIndex, int secondIndex)
+void swapElements(IntArray& arr, int firstIndex, int secondIndex)
 {
+    // arr - ссылка (IntArray&): это сам массив numbers из runTask1(), не копия.
+
     // Проверка границ: индекс должен быть в диапазоне [0; ARRAY_SIZE - 1].
     // ARRAY_SIZE приводится к int, чтобы не сравнивать знаковое с беззнаковым.
     const int size = static_cast<int>(ARRAY_SIZE);
@@ -131,7 +133,7 @@ void swapElements(int (&arr)[ARRAY_SIZE], int firstIndex, int secondIndex)
               << "] поменялись местами.\n";
 }
 
-void multiplyByTwo(int (&arr)[ARRAY_SIZE])
+void multiplyByTwo(IntArray& arr)
 {
     // Безопасные границы: если x больше MAX/2 (или меньше MIN/2),
     // то 2 * x не помещается в int.
@@ -163,7 +165,7 @@ void runTask1()
     // Статический массив: размер ARRAY_SIZE известен на этапе компиляции
     // (в отличие от динамического массива new int[N] из Задания №2).
     // Пустые фигурные скобки {} обнуляют все элементы.
-    int numbers[ARRAY_SIZE]{};
+    int numbers[ARRAY_SIZE]{}; // тип этого массива и есть IntArray
 
     std::cout << "\n=== Задание №1. Статический массив и ссылки ===\n";
 

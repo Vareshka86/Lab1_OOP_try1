@@ -11,15 +11,17 @@
  * > - multiplyByTwo() — умножает каждый элемент на 2 (range-based for с int&).
  *
  * Во всех функциях массив передаётся как **ссылка на массив**:
- * `int (&arr)[ARRAY_SIZE]`. В отличие от передачи `int* arr` (как в Си),
+ * `IntArray& arr`, где IntArray — имя типа «массив из ARRAY_SIZE чисел int».
+ * Это та же запись, что `int (&arr)[ARRAY_SIZE]`, но знак ссылки `&` стоит
+ * рядом с типом, как в `int& a`. В отличие от передачи `int* arr` (как в Си),
  * при этом не теряется информация о размере: компилятор знает, что в
  * массиве ровно ARRAY_SIZE элементов, поэтому работает range-based for,
  * а массив другого размера передать нельзя — будет ошибка компиляции.
  *
  * Подробное описание решения с примером работы — на странице @ref task1.
  * @author Vareshka86
- * @date 2026-10-02
- * @version 0.2
+ * @date 2026-10-05
+ * @version 1.0.1
  */
 
 #ifndef TASK1_H
@@ -31,6 +33,15 @@
 
 /// Количество элементов статического массива в Задании №1.
 constexpr std::size_t ARRAY_SIZE = 10;
+
+/**
+ * @brief Тип «статический массив из ARRAY_SIZE целых чисел».
+ * @details `IntArray` — другое имя для типа `int[ARRAY_SIZE]` (объявление
+ * `using`, C++11). Новый тип не создаётся. С ним ссылка на массив
+ * записывается так же, как ссылка на обычную переменную:
+ * `IntArray& arr` — то же самое, что `int (&arr)[ARRAY_SIZE]`.
+ */
+using IntArray = int[ARRAY_SIZE];
 
 /**
  * @brief Способ заполнения массива в функции fillArray().
@@ -50,7 +61,7 @@ enum class FillMode
  * @param mode Способ заполнения. Параметр по умолчанию — FillMode::Random,
  *             поэтому вызов `fillArray(arr)` заполнит массив случайно.
  */
-void fillArray(int (&arr)[ARRAY_SIZE], FillMode mode = FillMode::Random);
+void fillArray(IntArray& arr, FillMode mode = FillMode::Random);
 
 /**
  * @brief Выводит массив на экран в две строки: индексы и значения.
@@ -60,7 +71,7 @@ void fillArray(int (&arr)[ARRAY_SIZE], FillMode mode = FillMode::Random);
  * - `const` — печать не может случайно изменить массив.
  * @param arr Константная ссылка на выводимый массив.
  */
-void printArray(const int (&arr)[ARRAY_SIZE]);
+void printArray(const IntArray& arr);
 
 /**
  * @brief Меняет местами значения двух переменных, переданных по ссылке.
@@ -74,19 +85,24 @@ void swapValues(int& a, int& b);
 
 /**
  * @brief Меняет местами два элемента массива по их индексам.
- * @details Сначала проверяется, что оба индекса лежат в диапазоне
- * [0; ARRAY_SIZE - 1]. Затем элементы `arr[firstIndex]` и
- * `arr[secondIndex]` передаются **по ссылке** в swapValues(), которая
- * и меняет их местами прямо внутри массива.
+ * @details Аргументы передаются по ссылке на двух уровнях:
+ * 1. Сам массив приходит **по ссылке** `IntArray& arr`: функция работает с
+ *    исходным массивом вызывающей стороны, а не с копией.
+ * 2. Проверив, что оба индекса лежат в диапазоне [0; ARRAY_SIZE - 1],
+ *    функция передаёт элементы `arr[firstIndex]` и `arr[secondIndex]`
+ *    **по ссылке** в swapValues(int&, int&), которая и меняет их местами
+ *    прямо внутри массива.
+ *
+ * Индексы передаются по значению: функция их только читает и не меняет.
  * @param arr         Ссылка на массив, в котором меняются элементы.
- * @param firstIndex  Индекс первого элемента.
- * @param secondIndex Индекс второго элемента.
+ * @param firstIndex  Индекс первого элемента (передаётся по значению).
+ * @param secondIndex Индекс второго элемента (передаётся по значению).
  * @warning Если хотя бы один индекс выходит за границы массива,
  * выводится сообщение об ошибке и массив не изменяется.
  * @note Если индексы совпадают, обмен не нужен: выводится сообщение,
  * массив не изменяется.
  */
-void swapElements(int (&arr)[ARRAY_SIZE], int firstIndex, int secondIndex);
+void swapElements(IntArray& arr, int firstIndex, int secondIndex);
 
 /**
  * @brief Умножает каждый элемент массива на 2.
@@ -98,7 +114,7 @@ void swapElements(int (&arr)[ARRAY_SIZE], int firstIndex, int secondIndex);
  * пределы типа int (переполнение int в C++ — неопределённое поведение).
  * Если переполнение возможно, массив не изменяется и выводится сообщение.
  */
-void multiplyByTwo(int (&arr)[ARRAY_SIZE]);
+void multiplyByTwo(IntArray& arr);
 
 /**
  * @brief Запускает интерактивную демонстрацию Задания №1.
